@@ -72,32 +72,6 @@ javac Main.java FENParser.java
 java Main
 ```
 
-**macOS/Linux:**
-```bash
-cd ruta/a/PracticaFinal
-javac Main.java FENParser.java
-java Main
-```
-### Desde Visual Studio Code
-
-1. **Abrir la carpeta del proyecto** en VS Code
-2. **Abrir una terminal PowerShell** dentro de VS Code (Ctrl + `)
-3. **Configurar el entorno para Unicode:**
-
-```powershell
-$env:TERM = "xterm-256color"
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-```
-4. **Compilar los archivos:**
-
-```powershell
-javac Main.java FENParser.java
-```
-5. **Ejecutar el programa:**
-
-```powershell
-java Main
-```
 ---
 
 ## Uso del Programa
