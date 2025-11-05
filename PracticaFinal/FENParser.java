@@ -1,24 +1,19 @@
 import java.util.regex.Pattern;
 
 public class FENParser {
-    // Si true, usar símbolos ASCII en lugar de Unicode (p. ej. pasar -Dfen.ascii=true)
     private boolean useAscii;
     
     public FENParser() {
-        // Siempre usar ASCII por defecto
         useAscii = true;
         
         try {
-            // 1. Verificar codificación del sistema
             String encoding = System.getProperty("file.encoding", "").toLowerCase();
             String consoleEncoding = System.getProperty("sun.stdout.encoding", "").toLowerCase();
             
             if (encoding.contains("utf") || consoleEncoding.contains("utf")) {
-                // 2. Verificar si TERM o WT_SESSION están definidos (indica terminal moderna)
                 String term = System.getenv("TERM");
                 String wtSession = System.getenv("WT_SESSION");
                 
-                // 3. Intentar escribir y limpiar un carácter de prueba
                 if (term != null || wtSession != null) {
                     System.out.print("\r♔\b");
                     System.out.flush();
@@ -26,16 +21,13 @@ public class FENParser {
                 }
             }
         } catch (Exception e) {
-            // Si algo falla, mantener ASCII
             useAscii = true;
         }
     }
     
-    // Helper para elegir texto unicode o ASCII según la configuración
     private String t(String unicode, String ascii) {
         return useAscii ? ascii : unicode;
     }
-    // Expresiones regulares para validar cada componente
     private static final Pattern PIECE_PATTERN = Pattern.compile("[pnbrqkPNBRQK]");
     private static final Pattern DIGIT_PATTERN = Pattern.compile("[1-8]");
     private static final Pattern SIDE_PATTERN = Pattern.compile("[wb]");
@@ -44,7 +36,6 @@ public class FENParser {
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]+$");
     private static final Pattern POSITIVE_NUMBER_PATTERN = Pattern.compile("^[1-9][0-9]*$");
     
-    // Símbolos Unicode para las piezas
     private static final String BLACK_ROOK = "♜";
     private static final String BLACK_KNIGHT = "♞";
     private static final String BLACK_BISHOP = "♝";
@@ -68,7 +59,6 @@ public class FENParser {
 
         String[] parts = fen.split(" ");
 
-        // Validar que tenga exactamente 6 componentes
         if (parts.length != 6) {
             System.out.println(t(" Cadena FEN inválida"," Cadena FEN invalida"));
             System.out.println(t("Error: La notación FEN debe tener 6 componentes separados por espacios.",
@@ -78,7 +68,6 @@ public class FENParser {
             return;
         }
         
-        // Validar cada componente
         if (!validatePiecePlacement(parts[0])) return;
         if (!validateSideToMove(parts[1])) return;
         if (!validateCastling(parts[2])) return;
@@ -86,7 +75,6 @@ public class FENParser {
         if (!validateHalfmoveClock(parts[4])) return;
         if (!validateFullmoveCounter(parts[5])) return;
         
-    // Si todo es válido, mostrar el tablero
     System.out.println(t(" Cadena FEN válida\n"," Cadena FEN valida\n"));
         displayBoard(parts[0]);
         displayGameInfo(parts);
@@ -102,7 +90,6 @@ public class FENParser {
             return false;
         }
         
-        // Validar cada fila
         for (int i = 0; i < ranks.length; i++) {
             String rank = ranks[i];
             int squareCount = 0;
@@ -160,7 +147,6 @@ public class FENParser {
             return false;
         }
         
-        // Validar que no haya letras duplicadas
         if (castling.length() != castling.chars().distinct().count()) {
             System.out.println(t(" Cadena FEN inválida"," Cadena FEN invalida"));
             System.out.println(t("Error en 'Castling ability': No puede haber letras duplicadas",
@@ -249,20 +235,19 @@ public class FENParser {
     private String getPieceSymbol(char piece) {
         if (useAscii) {
             switch (piece) {
-                // Piezas negras en minúsculas
-                case 'r': return "t";  // torre
-                case 'n': return "c";  // caballo
-                case 'b': return "a";  // alfil
-                case 'q': return "d";  // dama
-                case 'k': return "r";  // rey
-                case 'p': return "p";  // peón
-                // Piezas blancas en mayúsculas
-                case 'R': return "T";  // Torre
-                case 'N': return "C";  // Caballo
-                case 'B': return "A";  // Alfil
-                case 'Q': return "D";  // Dama
-                case 'K': return "R";  // Rey
-                case 'P': return "P";  // Peón
+                case 'r': return "t";  
+                case 'n': return "c";  
+                case 'b': return "a";  
+                case 'q': return "d";  
+                case 'k': return "r";  
+                case 'p': return "p";  
+
+                case 'R': return "T";  
+                case 'N': return "C";  
+                case 'B': return "A"; 
+                case 'Q': return "D";  
+                case 'K': return "R";  
+                case 'P': return "P";  
                 default: return " ";
             }
         } else {
@@ -285,7 +270,7 @@ public class FENParser {
     }
     
     private void displayGameInfo(String[] parts) {
-    System.out.println(t("📋 Información de la partida:", "Informacion de la partida:"));
+    System.out.println(t(" Información de la partida:", "Informacion de la partida:"));
         System.out.println("   Turno: " + (parts[1].equals("w") ? "Blancas" : "Negras"));
         
         String castling = parts[2];
@@ -305,4 +290,5 @@ public class FENParser {
         System.out.println("   Medios movimientos: " + parts[4]);
         System.out.println("   Movimiento completo: " + parts[5]);
     }
+
 }
