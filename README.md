@@ -30,6 +30,9 @@ Este programa es un **analizador sintáctico (parser)** de notación FEN para aj
 **Java**
 
 ---
+## Video de sustentacion del proyecto final
+https://youtu.be/I9L7jbj8SM0
+---
 
 ## Requisitos Mínimos
 
